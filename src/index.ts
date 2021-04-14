@@ -5,7 +5,7 @@ const port = Number(process.env.PORT || 3000);
 
 const logRequest = (req: Request, res: Response, next: NextFunction) => {
   console.log(`${req.method} - ${req.originalUrl} ${JSON.stringify(req.params)}`);
-  console.log(`${res..statusCode}`);
+  console.log(`${res.statusCode}`);
   next();
 }
 
