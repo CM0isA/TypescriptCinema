@@ -1,8 +1,9 @@
 # Assignment
 
 Imagine you are the owner of a movie theater. You have a range of movies playing today, each at a specific time. For simplicity, we’ll assume there is only one movie hall, with a limited number of numbered seats, each movie is played just once, and only today. Your customers can see the movies playing today, the scheduled time, available seats for a specific movie and make a reservation.
+
 Once a reservation is made, the reserved seats become unavailable for that movie. If a reservation is cancelled, the seats become available again.
-You need to model the business using TypeScript and ES6. After creating the model, you should also create a 'sources' file which will contain all the test data. You then need to interact with data from services which answer the following criteria:
+You need to model the business using TypeScript and ES6. After creating the model, you should also create 'source.json' files which will contain the test data. You then need to interact with data from services which answer the following criteria:
 
 1. There has to be a way to see which movies are playing today, and the time they’re playing at (ex. A service that can return this information).
 2. There also has to be a way to see available seats for a specific movie, by specifying the movie id.
