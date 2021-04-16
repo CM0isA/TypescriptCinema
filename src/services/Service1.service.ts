@@ -1,14 +1,22 @@
 import movies from '../data/movies.json';
+import { Movie } from '../models';
 
 export class Service1 {
+
+    private _movieList: Movie[];
+
+    constructor() {
+        this._movieList = movies;
+    }
+
     /**
      * getMovies
      * TODO: define and specify a return type. Normally, typescript will infere it
      * but for the purposes of this exercise, let's specify it 
      */
-    public getMovies() {
-        console.log(`Retrieving movies data: ${JSON.stringify(movies)}`);
-        return movies;
+    public getMovies(): Movie[] {
+        console.log(`Retrieving movies data: ${JSON.stringify(this._movieList)}`);
+        return this._movieList;
     }
 
     /**
