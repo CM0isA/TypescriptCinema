@@ -10,4 +10,17 @@ export class Service1 {
         console.log(`Retrieving movies data: ${JSON.stringify(movies)}`);
         return movies;
     }
+
+    /**
+     * This is merely an example of how to edit the test data loaded in-memory
+     * from the local .json file.
+     * @returns The updated list of movies
+     * TODO: remove this method. It was simply added for demonstrative purposes.
+     */
+    public deleteMovieExample() {
+        console.log(`deleting last movie... ${JSON.stringify(movies)}`);
+        // Remove the last movie from the in-memory collection
+        movies.pop();
+        return movies;
+    }
 }

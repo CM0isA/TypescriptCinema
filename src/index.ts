@@ -22,6 +22,16 @@ app.get( "/movies", (req, res) => {
   res.send(response);
 });
 
+/** TODO: remove this endpoint.
+ * It was simply added to illustrate changes to the test data loaded in-memory
+ * from the local .json files.
+ */
+app.post( "/deleteMovie", (req, res) => {
+  let service1 = new Service1();
+  let response = service1.deleteMovieExample();
+  res.send(response);
+});
+
 app.listen(port, () => {
     console.log(`server started on port ${port}`);
 });
