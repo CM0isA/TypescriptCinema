@@ -14,7 +14,7 @@ app.use(logRequest);
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
+let service = new Service1();
 
 
 app.get( "/", (req, res) => {
@@ -22,30 +22,38 @@ app.get( "/", (req, res) => {
 });
 
 app.get( "/movies", (req, res) => {
-  let service1 = new Service1();
-  let response = service1.getMovies();
+
+  let response = service.getMovies();
   res.send(response);
 });
 
 app.get( "/today", (req, res) => {
-  let service1 = new Service1();
-  let response = service1.getTodayMovies();
+  let response = service.getTodayMovies();
   res.send(response);
 });
 
 app.get("/seats/:id", (req,res) =>{
-  let service = new Service1();
-  let id = req.params.id;
-  let response = service.getSeat(parseInt(id));
+  let movieId = req.params.id;
+  let response = service.getSeat(parseInt(movieId));
   res.send(JSON.stringify(response));
 });
 
 app.post("/addRezervarion/", (req: Request, res: Response)=> {
   let id =  req.body.id;
-  let item =  req.body.seats;
+  let seats =  req.body.seats;
+  if(seats!==""){
+    seats=seats.replace("[","");
+    seats=seats.replace(']','');
+  }
+  seats = seats.split(',')
+  let response = service.reserveSeats(id,seats);
+  res.send('The rezervation id is: ' + response);
+});
 
-  console.log(id);
-  res.send(item);
+app.get("/Cancel/:id", (req,res) =>{
+  let rezervationId = req.params.id;
+  let response = service.cancelRezervatiopn(parseInt(rezervationId));
+  res.send(JSON.stringify(response));
 });
 
 

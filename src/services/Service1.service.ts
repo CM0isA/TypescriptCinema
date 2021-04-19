@@ -9,20 +9,19 @@ export class Service1 {
     private _movieList: Movie[];
     private _todayMovies: Movie[] = [];
     private _cinema: Cinema[] = [];
+    private _rezervations: Rezervation[] = [];
 
     constructor() {
         this._movieList = movies;
         movies.forEach(movie => {
-            let cinema: Cinema = {movieId: movie.id,
-                                 freePlace: Seats[0].freeSeats,
-                                 ocupiedPlace: Seats[0].occupiedSeats
+            let cinema: Cinema = {  movieId: movie.id,
+                                    place : Seats[0].seats,
+                                    freePlace : Seats[0].freeSeats
                                 };
 
             this._cinema.push(cinema);
         });
     }
-
-
 
     /**
      * getMovies
@@ -33,7 +32,6 @@ export class Service1 {
         console.log(`Retrieving movies data: ${JSON.stringify(this._movieList)}`);
         return this._movieList;
     }
-
 
 
     public getTodayMovies(): Movie[] {
@@ -50,21 +48,70 @@ export class Service1 {
     }
 
 
-    public getSeat(id:number): number[] {
+    public getSeat(movieId:number): number[] {
         console.log(`Retrieve Seats data: ${JSON.stringify(this._cinema)}`);
-        
-        
-        console.log(id)
-        let place:number[] = [];
-        this._cinema.forEach(movie =>{
-            if(id == movie.movieId)
+        let places:number[] = [];
+
+        for( let i = 0; i< this._cinema.length; i++)
+        {
+            if(this._cinema[i].movieId == movieId)
             {
-                place = movie.freePlace;
+                
+                for( let j = 0; j< this._cinema[i].place.length; j++)
+                {
+                    
+                    if(this._cinema[i].freePlace[j])
+                    {
+                        places.push(this._cinema[i].place[j]);
+                    }
+                }
+                break;
             }
+        }
+
+        return places;
+    }
+
+    public reserveSeats(movieId:number,seats: number[]){
+        let valid: boolean = true;
+
+        for( let seat of seats)
+        {
+            if(this._cinema[movieId].freePlace[seat]==false)
+            {
+                valid = false;
+            }
+        }
+        if(valid)
+        {
+            let rezervation:Rezervation = {
+                rezervationid : this._rezervations.length,
+                movieId : movieId,
+                seat : seats
+            }
+            this._rezervations.push(rezervation)
+            seats.forEach((index: number) => {
+                this._cinema[movieId].freePlace[index-1] = false;
+            });
+
+
+            return rezervation.rezervationid;
+
+        }
+        else
+            return "The given seats are already occupied";
+
+    }
+
+    public cancelRezervatiopn(rezervationId:number){
+        let movieId = this._rezervations[rezervationId].movieId
+        
+        this._rezervations[rezervationId].seat.forEach(seat =>{
+            this._cinema[movieId].freePlace[seat] = true;
         });
 
-        return place;
     }
+
 
     /**
      * This is merely an example of how to edit the test data loaded in-memory
