@@ -11,9 +11,14 @@ const logRequest = (req: Request, res: Response, next: NextFunction) => {
 
 const app: Application = express();
 app.use(logRequest);
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+
 
 app.get( "/", (req, res) => {
-    res.send( "Hello Typescript Assignment" );
+    res.send(req.body);
 });
 
 app.get( "/movies", (req, res) => {
@@ -22,15 +27,28 @@ app.get( "/movies", (req, res) => {
   res.send(response);
 });
 
-/** TODO: remove this endpoint.
- * It was simply added to illustrate changes to the test data loaded in-memory
- * from the local .json files.
- */
-app.post( "/deleteMovie", (req, res) => {
+app.get( "/today", (req, res) => {
   let service1 = new Service1();
-  let response = service1.deleteMovieExample();
+  let response = service1.getTodayMovies();
   res.send(response);
 });
+
+app.get("/seats/:id", (req,res) =>{
+  let service = new Service1();
+  let id = req.params.id;
+  let response = service.getSeat(parseInt(id));
+  res.send(JSON.stringify(response));
+});
+
+app.post("/addRezervarion/", (req: Request, res: Response)=> {
+  let id =  req.body.id;
+  let item =  req.body.seats;
+
+  console.log(id);
+  res.send(item);
+});
+
+
 
 app.listen(port, () => {
     console.log(`server started on port ${port}`);

@@ -1,13 +1,28 @@
 import movies from '../data/movies.json';
+import Seats  from '../data/Cinema.json';
 import { Movie } from '../models';
+import { Cinema } from '../models/cinema';
+import { Rezervation } from '../models/rezervation'
 
 export class Service1 {
 
     private _movieList: Movie[];
+    private _todayMovies: Movie[] = [];
+    private _cinema: Cinema[] = [];
 
     constructor() {
         this._movieList = movies;
+        movies.forEach(movie => {
+            let cinema: Cinema = {movieId: movie.id,
+                                 freePlace: Seats[0].freeSeats,
+                                 ocupiedPlace: Seats[0].occupiedSeats
+                                };
+
+            this._cinema.push(cinema);
+        });
     }
+
+
 
     /**
      * getMovies
@@ -17,6 +32,38 @@ export class Service1 {
     public getMovies(): Movie[] {
         console.log(`Retrieving movies data: ${JSON.stringify(this._movieList)}`);
         return this._movieList;
+    }
+
+
+
+    public getTodayMovies(): Movie[] {
+        let date = new Date;
+        console.log(`Retrieving movies data: ${JSON.stringify(this._movieList)}`);
+        this._movieList.forEach(movie => {
+            let movieDate = new Date(movie.date);
+            if(movieDate.getDate() == date.getDate() && movieDate.getFullYear() == date.getFullYear())
+            {
+                this._todayMovies.push(movie);
+            }
+        });
+        return this._todayMovies;
+    }
+
+
+    public getSeat(id:number): number[] {
+        console.log(`Retrieve Seats data: ${JSON.stringify(this._cinema)}`);
+        
+        
+        console.log(id)
+        let place:number[] = [];
+        this._cinema.forEach(movie =>{
+            if(id == movie.movieId)
+            {
+                place = movie.freePlace;
+            }
+        });
+
+        return place;
     }
 
     /**
